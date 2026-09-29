@@ -1,0 +1,18 @@
+# Runtime parameters — loaded by the framework at agent construction time,
+# accessible as self.config. Distinct from config/agent.yaml (static manifest).
+
+max_retry: 3
+memory_enabled: false
+timeout_s: 30
+
+# DocGenerationNode has no deterministic path to "success" without an LLM:
+# every supplier falls back to the template-based narrative, MainNode
+# returns status=retry, and AgentBaseGraph's router exhausts max_retry
+# attempts (confirmed via node_history) then routes to finalize with the
+# terminal status still "retry" (finalize does not remap it to "error").
+# The default deploy-stg CI job does not set ANTHROPIC_API_KEY, so the
+# standalone entry point's smoke invoke correctly reaches this terminal
+# retry state on an unconfigured deployment rather than asserting an
+# unreachable "success". Declare it explicitly so Stage 5 evidence
+# reflects the real outcome.
+stg_expected_status: retry

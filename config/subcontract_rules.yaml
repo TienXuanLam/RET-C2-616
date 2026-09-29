@@ -1,0 +1,21 @@
+# Subcontract Act (下請法) Article 4 prohibited-act rule configuration —
+# proposal_en.md §11 Risk #2: "Subcontract Act rule config file becoming
+# outdated (not updated on law revision or ministerial ordinance change)."
+# Mitigation: revision date metadata here, recorded in the S-4 audit log
+# on every evaluation cycle, with an annual review mandated in
+# docs/07_operation_guide.md. Loaded by src/nodes/kpi_scoring_node.py.
+#
+# These thresholds are statically implementable based on public law
+# (proposal §10 Angle 5) — legal confirmation of the exact determination
+# logic is a pre-release dependency (proposal §12 Dependency #2), not a
+# design-time blocker.
+revision_date: "2026-07-06"
+
+# Unjustified return rate excess check: returned_qty / received_qty * 100
+# exceeding this limit is flagged as a potential Article 4 prohibited act.
+return_rate_limit_pct: 5.0
+
+# Payment delay check: any invoice with payment_delay_days exceeding this
+# limit is flagged as a potential Article 4 prohibited act (proposal §4:
+# "Payment delay check (>60 days)").
+payment_delay_limit_days: 60

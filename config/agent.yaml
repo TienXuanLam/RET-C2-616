@@ -1,0 +1,16 @@
+id: "RET-C2-616"
+name: "RetailSupplierQualitySLAScorecardAgent"
+namespace: "ret"
+version: "0.1.0"
+enabled: true
+category: "Cat 2"
+generation_mode: "llm"
+industry: "RET"
+base_type: "DocGenerationAgent"
+class: "src.graph.graph.RetailSupplierQualitySLAScorecardAgent"
+required_trust_level: "VERIFIED_EXTERNAL"
+requires:
+  secrets:
+    - ANTHROPIC_API_KEY
+  extras:
+    - anthropic

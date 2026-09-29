@@ -1,0 +1,20 @@
+# KPI threshold configuration — proposal_en.md §4 note: "KPI thresholds
+# (SLA standards, defect PPM limits, invoice error rate tolerance) are
+# configurable per evaluation cycle ... and can be updated without
+# redeployment." Loaded by src/nodes/kpi_scoring_node.py.
+#
+# revision metadata (proposal §11 Risk #2 mitigation pattern, mirrored here
+# for the KPI side of the config even though that risk specifically names
+# subcontract_rules.yaml)
+revision_date: "2026-07-06"
+
+# Hours within which a response to a supplier inquiry/complaint must occur
+# to count as "within SLA" for the responsiveness_sla_score KPI (Tool 4).
+responsiveness_sla_hours: 24
+
+# Reference-only informational thresholds for scorecard narrative framing
+# (docs/02_design.md DocGenerationNode step; not used for score computation
+# itself — computation is purely arithmetic in KPIScoringNode).
+defect_ppm_warning_threshold: 5000
+invoice_error_rate_warning_pct: 3.0
+on_time_delivery_rate_warning_pct: 90.0

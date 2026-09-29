@@ -1,0 +1,57 @@
+[project]
+name = "ret-c2-616"
+version = "0.1.0"
+description = "RetailSupplierQualitySLAScorecardAgent — AgentCore Template"
+requires-python = ">=3.11"
+# The framework (agenticstar-agentcore) is NOT a public-PyPI dependency; it is
+# installed from the package registry by the CI test pipeline. Pinning it here
+# would make `pip install -e .` fail because it is not resolvable from the
+# default index.
+#
+# pyyaml pinned to match agenticstar-agentcore's own pyyaml==6.0.1
+# requirement — a different pin here creates an unresolved dependency
+# conflict (confirmed: uv's resolver hard-fails when this pin diverges
+# from the wheel's own, breaking the deploy-stg job even though run-tests
+# itself doesn't install the wheel against this pin the same way).
+#
+# langchain-anthropic IS a real, direct dependency (not a framework extra):
+# shared.services.llm.anthropic_client.AnthropicClient imports it directly
+# (EXTRAS_MAP maps agent.yaml's requires.extras: [anthropic] -> this same
+# module name for compile-time checking, but that mapping never installs
+# the package). CI's run-tests only ever runs `-e ".[dev]"` — an
+# [project.optional-dependencies] "anthropic" group is NEVER installed in
+# CI, only by a developer manually opting in locally. AnthropicClient is
+# constructed for real by tests/proof_of_boundary/test_server_llm_injection.py
+# (a mandatory scaffold test), so this package must be a plain dependency.
+dependencies = [
+    "agenticstar-agentcore[marketplace,openai]==1.0.3",
+    "pyyaml==6.0.1",
+    "langchain-anthropic==1.4.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.0.3",
+    "pytest-cov==5.0.0",
+    "pytest-asyncio==1.4.0",
+    "ruff==0.4.4",
+    "mypy==1.10.0",
+    "msgpack==1.2.1",
+]
+
+[build-system]
+requires = ["setuptools==68.2.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+disallow_subclassing_any = false
+
+[[tool.mypy.overrides]]
+module = ["framework.*", "shared.*", "yaml", "msgpack"]
+ignore_missing_imports = true
